@@ -1,0 +1,11 @@
+{
+	"username":"",
+	"password":"",
+	"nextcloud_url":"http://xxx.xx/nextcloud/remote.php/dav/calendars/",
+	"calendar":"ecoparques_moviles",
+	"localidad":"València",
+	"emtre_url":"https://sirecoinfo.emtre.es:9001/api/webinfo/ecoparquesplanificacionmovil?idioma=ES&nombreLocalidad={localidad}&dateFrom={desde}&dateTo={hasta}",
+	"cp":"",
+	"desde":"hoy",
+	"hasta":"10"
+}
