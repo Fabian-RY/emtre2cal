@@ -28,13 +28,44 @@ NOMBRE = "nombreEcoparque"
 LATITUD = "latitud"
 LONGITUD = "longitud"
 
-def format_date_time(date):
+class calendar_event():
+
+    def __init__(self, fecha_inicio: str, fecha_fin: str, description: str, ubi: dict, lat:str, long:str):
+        self.fecha_inicio = fecha_inicio
+        self.fecha_fin = fecha_fin
+        self.description = description
+        self.ubi = ubi,
+        self.lat = lat
+        self.long = long
+        pass
+    
+    def __str__(self) -> str:
+        return self.__repr__()
+
+    def __repr__(self) -> str:
+        event_ics = f"""BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//ExampleCorp//ExampleCalDAVClient//EN
+BEGIN:VEVENT
+UID:{self.event_uid}
+DTSTAMP;VALUE=DATE:{self.fecha}
+DTSTART;VALUE=DATE:{self.fecha}
+GEO:{self.lat};{self.long}
+LOCATION: {self.ubi}
+SUMMARY:Ecoparque Movil {self.ubi}
+DESCRIPTION:{self.description}
+END:VEVENT
+END:VCALENDAR
+"""     
+        pass
+
+def format_date_time(date: datetime):
     day = str(date.day) if date.day >= 10 else "0"+str(date.day)
     month = str(date.month) if date.month >= 10 else "0"+str(date.month)
     year = str(date.year)
     return str(day)+str(month)+ str(year)
 
-def build_api_link(baselink, city, from_date, to_date):
+def build_api_link(baselink:str, city:str, from_date:str, to_date:int):
     if from_date == HOY:
         from_date = datetime.datetime.today()
     to_date = from_date + datetime.timedelta(days=int(to_date))
@@ -44,13 +75,13 @@ def build_api_link(baselink, city, from_date, to_date):
     link = link.replace(DESDE, from_date)
     return link.replace(HASTA, to_date)
 
-def get_api_results(link, verify=False):
+def get_api_results(link:str, verify:bool =False):
     data = requests.get(link, verify=verify)
     data.raise_for_status()
     return json.loads(data.content)
     pass
 
-def parse_api_results(json_api, filtro):
+def parse_api_results(json_api:dict, filtro:dict) -> calendar_event:
     for key in json_api:
         ubi = key[UBICACION]
         if(filtro[LOCALIDAD2] is not None and
